@@ -1,2 +1,0 @@
-__init__
-train_entry_point
