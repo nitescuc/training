@@ -14,7 +14,7 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 from keras import callbacks
 
 def train():
-    get_ipython().system('mkdir -p logs')
+    os.system('mkdir -p logs')
 
     # ### Loading the files ###
     # ** You need to copy all your files to the directory where you are runing this notebook into a folder named "data" **
@@ -46,7 +46,9 @@ def train():
 
     # Normalize / correct data
     data = [d for d in data if d[1] > 0.1]
-    data = [0.2 for d in data if d[1] < 0.2]
+    for d in data:
+        if d[1] < 0.2:
+            d[1] = 0.2
 
     # ### Loading throttle and angle ###
 
