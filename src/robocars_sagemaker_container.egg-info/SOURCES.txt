@@ -1,0 +1,8 @@
+setup.py
+src/__init__.py
+src/train_entry_point.py
+src/robocars_sagemaker_container.egg-info/PKG-INFO
+src/robocars_sagemaker_container.egg-info/SOURCES.txt
+src/robocars_sagemaker_container.egg-info/dependency_links.txt
+src/robocars_sagemaker_container.egg-info/requires.txt
+src/robocars_sagemaker_container.egg-info/top_level.txt
