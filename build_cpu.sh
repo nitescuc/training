@@ -1,1 +1,0 @@
-docker build -t tensorflow:1.4.1-cpu-py3 .

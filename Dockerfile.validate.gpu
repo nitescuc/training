@@ -1,5 +1,0 @@
-FROM tensorflow:1.4.1-gpu-py3
-
-RUN mkdir -p /opt/ml/input/config
-
-ADD stub/config /opt/ml/input/config

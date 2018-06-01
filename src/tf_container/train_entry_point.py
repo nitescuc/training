@@ -12,8 +12,10 @@ from keras.models import Model
 from keras.layers import Convolution2D, MaxPooling2D, Reshape, BatchNormalization
 from keras.layers import Activation, Dropout, Flatten, Dense
 from keras import callbacks
+from tensorflow.python.client import device_lib
 
 def train():
+    print(device_lib.list_local_devices())
     os.system('mkdir -p logs')
 
     # ### Loading the files ###
