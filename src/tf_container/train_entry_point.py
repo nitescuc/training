@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import container_support as cs
+
 import os
 import json
 import re
@@ -15,6 +17,8 @@ from keras import callbacks
 from tensorflow.python.client import device_lib
 
 def train():
+    env = cs.TrainingEnvironment()
+
     print(device_lib.list_local_devices())
     os.system('mkdir -p logs')
 
@@ -75,6 +79,16 @@ def train():
     images = images[:len(images)-2]
     angle_array = angle_array[2:]
     throttle_array = throttle_array[2:]
+
+    #generate enhanced set
+    if env.hyperparameters.get('enhance', False):
+        value = 40
+        images_white = np.where((255 - images) < value,255,images+value)
+        images_black = np.where(images < value,0,images-value)
+
+        images = np.concatenate((images, images_white, images_black))
+        angle_array = np.concatenate((angle_array, np.copy(angle_array), np.copy(angle_array)))
+        throttle_array = np.concatenate((throttle_array, np.copy(throttle_array), np.copy(throttle_array)))
 
 
     # ### Start training ###
