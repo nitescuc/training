@@ -6,7 +6,7 @@ WORKDIR /usr/src
 
 RUN python3 setup.py sdist
 
-FROM tensorflow-base:1.4.1-gpu-py3
+FROM robocars-base:1.8.0-gpu-py3
 
 WORKDIR /root
 

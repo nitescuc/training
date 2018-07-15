@@ -16,4 +16,4 @@ aws sagemaker create-training-job \
     --input-data-config '[{ "ChannelName": "train", "DataSource": { "S3DataSource": { "S3DataType": "S3Prefix", "S3Uri": "s3://robocars", "S3DataDistributionType": "FullyReplicated" }} }]' \
     --output-data-config S3OutputPath=s3://robocars \
     --resource-config InstanceType=ml.p2.xlarge,InstanceCount=1,VolumeSizeInGB=1 \
-    --stopping-condition MaxRuntimeInSeconds=1800
+    --stopping-condition MaxRuntimeInSeconds=3600
