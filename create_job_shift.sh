@@ -10,7 +10,7 @@ echo 'Creating training job '$1
 
 aws sagemaker create-training-job \
     --training-job-name $job_name \
-    --hyper-parameters '{ "sagemaker_region": "\"eu-west-1\"", "slide": "2" }' \
+    --hyper-parameters '{ "sagemaker_region": "\"eu-west-1\"", "slide": "2", "enhance": "\"shift\"", "input_model": "\"aws-maison-181117-h100-2slide.h5\"" }' \
     --algorithm-specification TrainingImage="263430657496.dkr.ecr.eu-west-1.amazonaws.com/robocars:1.8.0-gpu-py3",TrainingInputMode=File \
     --role-arn "arn:aws:iam::263430657496:role/service-role/AmazonSageMaker-ExecutionRole-20180512T173485" \
     --input-data-config '[{ "ChannelName": "train", "DataSource": { "S3DataSource": { "S3DataType": "S3Prefix", "S3Uri": "s3://robocars", "S3DataDistributionType": "FullyReplicated" }} }]' \
