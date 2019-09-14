@@ -6,7 +6,7 @@ WORKDIR /usr/src
 
 RUN python3 setup.py sdist
 
-FROM robocars-base:1.8.0-gpu-py3
+FROM robocars-base:1.12.3-gpu-py3
 
 WORKDIR /root
 
@@ -14,7 +14,8 @@ RUN apt-get -y update && \
     apt-get -y install curl && \
     apt-get -y install vim && \
     apt-get -y install iputils-ping && \
-    apt-get -y install nginx
+    apt-get -y install nginx && \
+    apt install -y libsm6 libxext6 && pip install opencv-python==3.3.0.9
 
 # install telegraf
 #RUN cd /tmp && \

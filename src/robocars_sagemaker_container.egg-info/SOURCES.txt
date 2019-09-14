@@ -1,0 +1,13 @@
+src/robocars_sagemaker_container.egg-info/PKG-INFO
+src/robocars_sagemaker_container.egg-info/SOURCES.txt
+src/robocars_sagemaker_container.egg-info/dependency_links.txt
+src/robocars_sagemaker_container.egg-info/requires.txt
+src/robocars_sagemaker_container.egg-info/top_level.txt
+src/tf_container/NVidia.py
+src/tf_container/__init__.py
+src/tf_container/generators.py
+src/tf_container/local_train.py
+src/tf_container/squeezenet.py
+src/tf_container/test_generate_enhanced_dataset.py
+src/tf_container/train_entry_point.py
+src/tf_container/train_helpers.py
