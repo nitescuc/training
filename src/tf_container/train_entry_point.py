@@ -6,6 +6,7 @@ import os
 import zipfile
 import numpy as np
 import math
+import datetime
 
 from tensorflow.python.client import device_lib
 
@@ -46,7 +47,8 @@ def train():
         in_model_path = os.path.join('/opt/ml/input/data/train', env.hyperparameters.get('input_model', False))
 
     data = th.load_data(root)
-    out_pattern = '/opt/ml/model/model_cat_{epoch:02d}_{angle_out_loss:.2f}_{val_angle_out_loss:.2f}.h5'
+    #out_pattern = '/opt/ml/model/model_cat_{epoch:02d}_{angle_out_loss:.2f}_{val_angle_out_loss:.2f}.h5'
+    out_pattern = '/opt/ml/model/model-blur-2slide-' + datetime.datetime.now().strftime("%y%m%d_%H%M") + '.h5'
 
     # ### Start training ###
     if env.hyperparameters.get('use_generator'):
