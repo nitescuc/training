@@ -25,7 +25,7 @@ RUN apt-get -y update && \
 
 COPY --from=builder /usr/src/dist/robocars_sagemaker_container-1.0.0.tar.gz .
 
-RUN pip3 install robocars_sagemaker_container-1.0.0.tar.gz && rm robocars_sagemaker_container-1.0.0.tar.gz
+RUN pip3 install robocars_sagemaker_container-1.0.0.tar.gz && rm robocars_sagemaker_container-1.0.0.tar.gz && pip list
 
 # entry.py comes from sagemaker-container-support
 ENTRYPOINT ["entry.py"]

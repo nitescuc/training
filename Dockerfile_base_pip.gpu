@@ -2,5 +2,5 @@ FROM tensorflow/tensorflow:1.12.3-gpu-py3
 
 #tensorflow-serving-api-python3==1.7.0 
 RUN pip3 list && pip3 install numpy boto3 six awscli flask==0.11 Jinja2==2.9 gevent gunicorn keras pillow h5py \
-    && pip3 list #\
-#    && pip3 uninstall -y tensorflow && pip3 install tensorflow-gpu==1.8.0 
+    && pip3 list \
+    && pip3 uninstall -y tensorflow && pip3 install tensorflow-gpu==1.12.3
