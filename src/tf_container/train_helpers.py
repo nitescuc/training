@@ -67,18 +67,24 @@ def throttle_bin(a):
 
 def remap_throttle(data):
     break_range = 10
+    break_throttle = 9
     slow_throttle = 10
     medium_throttle = 12
     high_throttle = 14
 
     data[:,1] = slow_throttle
-    throttle_array = np.array(data[:,1], dtype='float32')
+    throttle_array = np.copy(np.array(data[:,1], dtype='float32'))
     angle_array = np.array(data[:,2], dtype='float32')
     start_idx = 0
     end_idx = 0
     start_range = False
     for a_idx in range(0, len(angle_array)):
         val = angle_array[a_idx]
+        if a_idx < len(angle_array)-3 and throttle_array[a_idx] < 6 and throttle_array[a_idx+1] < 6 and throttle_array[a_idx+2] < 6:
+            start_range = False
+            for idx in range(a_idx, min(a_idx+10, len(angle_array))):
+                data[idx,1] = break_throttle
+
         if val >= 5 and val <= 10:
             if not start_range: 
                 start_range = True
@@ -100,6 +106,7 @@ def remap_throttle(data):
     
 
 def generate_enhanced_dataset(root, destination, images_count):
+    print('Generate enhanced dataset')
     do_random_shift = True
     blur = True
     rnd_lines = True
@@ -153,6 +160,7 @@ def generate_enhanced_dataset(root, destination, images_count):
             cnt = cnt + 1
             if cnt > images_count:
                 break
+    print('Generate enhanced dataset done')
 
 
 def get_dataset(data, slide, enhance):
