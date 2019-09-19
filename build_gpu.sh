@@ -1,1 +1,1 @@
-docker build -t tensorflow:1.8.0-gpu-py3 -f Dockerfile.gpu .
+docker build -t robocars:1.12.3-gpu-py3 -f Dockerfile.gpu .

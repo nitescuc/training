@@ -19,7 +19,9 @@ numbers = re.compile(r'(\d+)')
 
 def get_data(root,f):
     d = json.load(open(os.path.join(root,f)))
-    return [d['user/mode'],d['user/throttle'],d['user/angle'],root,d['cam/image_array'], None]
+    if d['user/angle'] == None:
+        d['user/angle'] = 0
+    return ['user',d['user/throttle'],d['user/angle'],root,d['cam/image_array'], None]
 def numericalSort(value):
     parts = numbers.split(value)
     parts[1::2] = map(int, parts[1::2])
@@ -33,6 +35,7 @@ def load_data(rootDir):
     data = np.array(data)
     angles = np.array(data[:,2], dtype='float32')
     if np.max(angles) < 2:
+        print('load_data mapping to discrete')
         data = [to_discrete_data(d) for d in data]
     data = np.array(data)
 
