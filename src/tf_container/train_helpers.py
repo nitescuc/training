@@ -18,28 +18,35 @@ from tf_container.generators import gen_batch
 numbers = re.compile(r'(\d+)')
 
 def get_data(root,f):
-    d = json.load(open(os.path.join(root,f)))
-    if d['user/angle'] == None:
-        d['user/angle'] = 0
-    return ['user',d['user/throttle'],d['user/angle'],root,d['cam/image_array'], None]
+    try:
+        d = json.load(open(os.path.join(root,f)))
+        if d['user/angle'] == None:
+            d['user/angle'] = 0
+        return ['user',d['user/throttle'],d['user/angle'],root,d['cam/image_array'], None]
+    except:
+        return None
+
+
 def numericalSort(value):
     parts = numbers.split(value)
     parts[1::2] = map(int, parts[1::2])
     return parts
 
-def load_data(rootDir):
+
+def load_data(rootDir, break_range=10):
     data = []
     for root, dirs, files in os.walk(rootDir):
         data.extend([get_data(root,f) for f in sorted(files, key=numericalSort) if f.startswith('record') and f.endswith('.json')])
 
-    data = np.array(data)
+    data = np.array([d for d in data if d != None])
+
     angles = np.array(data[:,2], dtype='float32')
     if np.max(angles) < 2:
         print('load_data mapping to discrete')
         data = [to_discrete_data(d) for d in data]
     data = np.array(data)
 
-    remap_throttle(data)
+    remap_throttle(data, break_range)
 
     return data
 
@@ -68,8 +75,7 @@ def throttle_bin(a):
     return arr
 
 
-def remap_throttle(data):
-    break_range = 10
+def remap_throttle(data, break_range=10):
     break_throttle = 9
     slow_throttle = 10
     medium_throttle = 12
@@ -108,14 +114,12 @@ def remap_throttle(data):
             start_range = False
     
 
-def generate_enhanced_dataset(root, destination, images_count):
+def generate_enhanced_dataset(root, destination, images_count, break_range=10, blur=True, crop=0, clahe=True):
     print('Generate enhanced dataset')
     do_random_shift = True
-    blur = True
     rnd_lines = True
-    crop = False
 
-    data = load_data(root)
+    data = load_data(root, break_range)
 
     # load images
     for idx in range(0, len(data)):
@@ -133,6 +137,10 @@ def generate_enhanced_dataset(root, destination, images_count):
     while cnt < images_count:
         for idx in range(0, len(data)):
             img = data[idx, 5]
+            if clahe:
+                claheTransform = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+                img = claheTransform.apply(img).reshape(120,160,1)
+
             if do_random_shift:
                 img = random_shift(img, 0.1, 0.0, row_axis=0, col_axis=1, channel_axis=2) 
             if rnd_lines:
@@ -150,7 +158,7 @@ def generate_enhanced_dataset(root, destination, images_count):
                 img = np.array(cv2.bilateralFilter(img,9,75,75), dtype='uint8').reshape(120,160,1)
             # step3
             if crop:
-                img[95:120] = 0
+                img[crop:120] = 0
 
             # save image
             img_filename = '{:08d}_cam-image_array_.jpg'.format(cnt)
