@@ -49,6 +49,10 @@ def train():
     if env.hyperparameters.get('crop', False):
         crop = env.hyperparameters.get('crop', False)
         print('Crop parameter:' + str(crop))
+    model_name = 'model'
+    if env.hyperparameters.get('model_name', False):
+        model_name = env.hyperparameters.get('model_name', False)
+    
 
     # generate enhanced data
     root = '/opt/ml/input/data/train'
@@ -65,13 +69,13 @@ def train():
     # load data
     data = th.load_data(root, break_range)
     #out_pattern = '/opt/ml/model/model_cat_{epoch:02d}_{angle_out_loss:.2f}_{val_angle_out_loss:.2f}.h5'
-    options = ["blur", "2slide"]
+    options = [model_name, "blur", str(slide) + "slide"]
     if crop:
         options.append("crop" + str(crop))
     if clahe:
         options.append("clahe")
     options.append(datetime.datetime.now().strftime("%y%m%d_%H%M"))
-    out_pattern = '/opt/ml/model/model-' + '-'.join(options) + '.h5'
+    out_pattern = '/opt/ml/model/' + '-'.join(options) + '.h5'
 
     # ### Start training ###
     if env.hyperparameters.get('use_generator'):

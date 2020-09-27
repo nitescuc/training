@@ -35,12 +35,19 @@ def numericalSort(value):
 
 def load_data(rootDir, break_range=10):
     data = []
+
     for root, dirs, files in os.walk(rootDir):
         data.extend([get_data(root,f) for f in sorted(files, key=numericalSort) if f.startswith('record') and f.endswith('.json')])
 
     data = np.array([d for d in data if d != None])
 
-    angles = np.array(data[:,2], dtype='float32')
+    angles = np.copy(data[:,2])
+
+    # mean angles
+#    window = 5
+#    for idx in range(window, len(data) - window):
+#        data[idx, 2] = round(np.mean(angles[idx-window:idx+window]))
+
     if np.max(angles) < 2:
         print('load_data mapping to discrete')
         data = [to_discrete_data(d) for d in data]
